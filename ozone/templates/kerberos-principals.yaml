@@ -1,0 +1,26 @@
+{{ if and Values.security.enabled (eq Values.security.authentication "kerberos") }}
+apiVersion: krb-operator.novakov-alexey.github.io/v1
+kind: Principals
+metadata:
+  name: ozone-service-principals
+  labels:
+    krb-operator.novakov-alexey.github.io/server: {{ .Values.kerberos.server }}
+spec:
+  list:
+    - name: scm
+      keytab: {{ base .Values.scm.security.kerberos.keytab.path }}
+      secret:
+        type: Keytab
+        name: scm-keytab
+    - name: om
+      keytab: {{ base .Values.om.security.kerberos.keytab.path }}
+      secret:
+        type: Keytab
+        name: om-keytab
+    - name: datanode
+      keytab: {{ base .Values.datanode.security.kerberos.keytab.path }}
+      secret:
+        type: Keytab
+        name: datanode-keytab
+
+{{ end }}

@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: krb-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment: krb-operator
+  template:
+    metadata:
+      labels:
+        deployment: krb-operator
+    spec:
+      containers:
+        - env:
+            - name: KRB5_IMAGE
+              value: {{ .Values.image.krb5.name }}:{{ .Values.image.krb5.version }}
+            - name: APP_CONFIG_PATH
+              value: /opt/docker/resources/application.conf
+            - name: K8S_SPECS_DIR
+              value: /opt/docker/resources
+            - name: NAMESPACE
+              value: ALL
+            - name: LOGBACK_CONFIG_FILE
+              value: /opt/conf/logback.xml
+            - name: PARALLEL_SECRET_CREATION
+              value: 'false'
+          image: {{ .Values.image.operator.name }}:{{ .Values.image.operator.version }}
+          imagePullPolicy: Always
+          livenessProbe:
+            exec:
+              command:
+                - pgrep
+                - "-fl"
+                - kerberos-operator
+            initialDelaySeconds: 20
+            periodSeconds: 20
+          name: krb-operator
+          volumeMounts:
+            - mountPath: /opt/conf/logback.xml
+              name: logback-xml
+              subPath: logback.xml
+      serviceAccountName: krb-operator
+      volumes:
+        - configMap:
+            defaultMode: 511
+            name: krb-logback
+          name: logback-xml

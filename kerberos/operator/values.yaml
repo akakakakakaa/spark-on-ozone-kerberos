@@ -1,0 +1,7 @@
+image:
+  krb5:
+    name: alexeyn/krb5
+    version: latest
+  operator:
+    name: alexeyn/kerberos-operator
+    version: 0.4.18

@@ -1,0 +1,14 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app: krb-operator
+  name: krb-operator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: krb-operator
+subjects:
+  - kind: ServiceAccount
+    name: krb-operator
+    namespace: {{ .Release.Namespace }}

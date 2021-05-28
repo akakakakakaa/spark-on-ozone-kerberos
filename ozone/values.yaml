@@ -1,0 +1,43 @@
+image:
+  name: apache/ozone
+  version: 1.0.0
+
+security:
+  enabled: true
+  authentication: kerberos
+
+  # used when authentication is kerberos
+  kerberos:
+    server: my-krb
+    realm: EXAMPLE.COM
+
+om:
+  replicas: 1
+  volume:
+    storage: 2Gi
+  security:
+    kerberos:
+      keytab:
+        path: /etc/security/keytabs/om.keytab
+
+scm:
+  replicas: 1
+  volume:
+    storage: 2Gi
+  security:
+    kerberos:
+      keytab:
+        path: /etc/security/keytabs/scm.keytab
+
+
+s3g:
+  replicas: 1
+
+datanode:
+  replicas: 1
+  volume:
+    storage: 2Gi
+  security:
+    kerberos:
+      keytab:
+        path: /etc/security/keytabs/datanode.keytab

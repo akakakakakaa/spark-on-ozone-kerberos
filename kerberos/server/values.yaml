@@ -1,0 +1,3 @@
+server:
+  name: krb-server
+realm: EXAMPLE.COM

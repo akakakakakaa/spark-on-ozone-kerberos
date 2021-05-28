@@ -1,0 +1,5 @@
+apiVersion: v1
+appVersion: v0.4.1
+name: krb-server
+description: Krb Server Helm chart for Kubernetes
+version: 0.1.0
