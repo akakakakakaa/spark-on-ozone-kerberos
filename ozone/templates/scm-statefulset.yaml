@@ -68,12 +68,12 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /data
-        {{- if and Values.security.enabled (eq Values.security.authentication "kerberos") }}
+        {{- if and .Values.security.enabled (eq .Values.security.authentication "kerberos") }}
         - name: scm-keytab
           mountPath: {{ .Values.scm.security.kerberos.keytab.path }}
         {{- end }}
       volumes:
-      {{- if and Values.security.enabled (eq Values.security.authentication "kerberos") }}
+      {{- if and .Values.security.enabled (eq .Values.security.authentication "kerberos") }}
       - name: scm-keytab
         secret:
           secretName: scm-keytab

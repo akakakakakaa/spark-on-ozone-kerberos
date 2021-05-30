@@ -1,4 +1,4 @@
-{{ if and Values.security.enabled (eq Values.security.authentication "kerberos") }}
+{{ if and .Values.security.enabled (eq .Values.security.authentication "kerberos") }}
 apiVersion: krb-operator.novakov-alexey.github.io/v1
 kind: Principals
 metadata:

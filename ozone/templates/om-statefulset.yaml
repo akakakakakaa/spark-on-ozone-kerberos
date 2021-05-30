@@ -60,12 +60,12 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /data
-        {{- if and Values.security.enabled (eq Values.security.authentication "kerberos") }}
+        {{- if and .Values.security.enabled (eq .Values.security.authentication "kerberos") }}
         - name: om-keytab
           mountPath: {{ .Values.om.security.kerberos.keytab.path }}
         {{- end }}
       volumes:
-      {{- if and Values.security.enabled (eq Values.security.authentication "kerberos") }}
+      {{- if and .Values.security.enabled (eq .Values.security.authentication "kerberos") }}
       - name: om-keytab
         secret:
           secretName: om-keytab
