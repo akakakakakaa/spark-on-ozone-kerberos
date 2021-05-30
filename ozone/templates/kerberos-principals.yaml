@@ -4,7 +4,7 @@ kind: Principals
 metadata:
   name: ozone-service-principals
   labels:
-    krb-operator.novakov-alexey.github.io/server: {{ .Values.kerberos.server }}
+    krb-operator.novakov-alexey.github.io/server: {{ .Values.security.kerberos.server }}
 spec:
   list:
     - name: scm

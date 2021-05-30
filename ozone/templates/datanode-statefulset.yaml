@@ -63,13 +63,16 @@ spec:
           mountPath: /data
         {{- if and .Values.security.enabled (eq .Values.security.authentication "kerberos") }}
         - name: datanode-keytab
-          mountPath: {{ .Values.datanode.security.kerberos.keytab.path }}
+          mountPath: {{ dir .Values.datanode.security.kerberos.keytab.path }}
         {{- end }}
       volumes:
       {{- if and .Values.security.enabled (eq .Values.security.authentication "kerberos") }}
       - name: datanode-keytab
         secret:
           secretName: datanode-keytab
+          items:
+          - key: {{ base .Values.datanode.security.kerberos.keytab.path }}
+            path: {{ base .Values.datanode.security.kerberos.keytab.path }}
       {{- end }}
   volumeClaimTemplates:
   - metadata:

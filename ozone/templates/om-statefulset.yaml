@@ -62,13 +62,16 @@ spec:
           mountPath: /data
         {{- if and .Values.security.enabled (eq .Values.security.authentication "kerberos") }}
         - name: om-keytab
-          mountPath: {{ .Values.om.security.kerberos.keytab.path }}
+          mountPath: {{ dir .Values.om.security.kerberos.keytab.path }}
         {{- end }}
       volumes:
       {{- if and .Values.security.enabled (eq .Values.security.authentication "kerberos") }}
       - name: om-keytab
         secret:
           secretName: om-keytab
+          items:
+          - key: {{ base .Values.om.security.kerberos.keytab.path }}
+            path: {{ base .Values.om.security.kerberos.keytab.path }}
       {{- end }}
   volumeClaimTemplates:
   - metadata:
