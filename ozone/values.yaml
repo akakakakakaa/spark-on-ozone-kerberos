@@ -8,7 +8,7 @@ security:
 
   # used when authentication is kerberos
   kerberos:
-    server: my-krb
+    server: krb-server
     realm: EXAMPLE.COM
 
 om:
