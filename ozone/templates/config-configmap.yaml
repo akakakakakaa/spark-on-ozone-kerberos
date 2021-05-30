@@ -22,7 +22,7 @@ data:
   {{- if .Values.security.enabled }}
   OZONE-SITE.XML_ozone.security.enabled: "true"
   CORE-SITE.XML_hadoop.security.authentication: {{ .Values.security.authentication }}
-  {{- if .Values.security.authentication "kerberos" }}
+  {{- if eq .Values.security.authentication "kerberos" }}
   OZONE-SITE.XML_hdds.scm.kerberos.principal: scm/scm@{{ .Values.security.kerberos.realm }}
   OZONE-SITE.XML_hdds.scm.kerberos.keytab.file: {{ .Values.scm.security.kerberos.keytab.path }}
   OZONE-SITE.XML_ozone.om.kerberos.principal: om/om@{{ .Values.security.kerberos.realm }}
