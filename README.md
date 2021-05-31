@@ -7,7 +7,7 @@ If minikube is installed on the Kubernetes docker bridge network, pod cannot use
 
 Therefore, in order for the Kerberos server,  minikube hairpin mode must be modified.
 
-refer this [link](https://kubernetes.io/docs/tasks/debug-application-cluster/debug-service/#a-pod-fails-to-reach-itself-via-the-service-ip)
+Please refer this [link](https://kubernetes.io/docs/tasks/debug-application-cluster/debug-service/#a-pod-fails-to-reach-itself-via-the-service-ip)
 
 
 ```
