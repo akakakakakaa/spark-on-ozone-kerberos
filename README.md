@@ -3,7 +3,7 @@
 ## Minikube
 When testing in minikube, you usually install minikube on docker.
 
-Therefore, if minikube is installed on the Kubernetes docker bridge network, pod cannot use its own service name.
+If minikube is installed on the Kubernetes docker bridge network, pod cannot use its own service name.
 
 Therefore, in order for the Kerberos server,  minikube hairpin mode must be modified.
 
