@@ -9,18 +9,26 @@ spec:
   list:
     - name: scm
       keytab: {{ base .Values.scm.security.kerberos.keytab.path }}
+      password:
+        type: static
+        value: scm
       secret:
-        type: Keytab
+        type: KeytabAndPassword
         name: scm-keytab
     - name: om
       keytab: {{ base .Values.om.security.kerberos.keytab.path }}
+      password:
+        type: static
+        value: om
       secret:
-        type: Keytab
+        type: KeytabAndPassword
         name: om-keytab
     - name: datanode
       keytab: {{ base .Values.datanode.security.kerberos.keytab.path }}
+      password:
+        type: static
+        value: datanode
       secret:
-        type: Keytab
+        type: KeytabAndPassword
         name: datanode-keytab
-
 {{ end }}

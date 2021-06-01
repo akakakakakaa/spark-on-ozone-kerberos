@@ -38,7 +38,7 @@ spec:
         prometheus.io/path: /prom
     spec:
       securityContext:
-        fsGroup: 1000
+        fsGroup: 1234
       initContainers:
       - name: init
         image: '{{ .Values.image.name }}:{{ .Values.image.version }}'
@@ -55,6 +55,8 @@ spec:
       containers:
       - name: scm
         image: '{{ .Values.image.name }}:{{ .Values.image.version }}'
+        #command: ["/bin/bash", "-c", "--"]
+        #args: [ "while true; do sleep 10000; done;"]
         args:
         - ozone
         - scm
@@ -71,6 +73,9 @@ spec:
         {{- if and .Values.security.enabled (eq .Values.security.authentication "kerberos") }}
         - name: scm-keytab
           mountPath: {{ dir .Values.scm.security.kerberos.keytab.path }}
+        - name: krb5-conf
+          mountPath: /etc/krb5.conf
+          subPath: krb5.conf
         {{- end }}
       volumes:
       {{- if and .Values.security.enabled (eq .Values.security.authentication "kerberos") }}
@@ -80,6 +85,9 @@ spec:
           items:
           - key: {{ base .Values.scm.security.kerberos.keytab.path }}
             path: {{ base .Values.scm.security.kerberos.keytab.path }}
+      - name: krb5-conf
+        configMap:
+          name: krb5-conf
       {{- end }}
   volumeClaimTemplates:
   - metadata:

@@ -64,6 +64,9 @@ spec:
         {{- if and .Values.security.enabled (eq .Values.security.authentication "kerberos") }}
         - name: datanode-keytab
           mountPath: {{ dir .Values.datanode.security.kerberos.keytab.path }}
+        - name: krb5-conf
+          mountPath: /etc/krb5.conf
+          subPath: krb5.conf
         {{- end }}
       volumes:
       {{- if and .Values.security.enabled (eq .Values.security.authentication "kerberos") }}
@@ -73,6 +76,9 @@ spec:
           items:
           - key: {{ base .Values.datanode.security.kerberos.keytab.path }}
             path: {{ base .Values.datanode.security.kerberos.keytab.path }}
+      - name: krb5-conf
+        configMap:
+          name: krb5-conf
       {{- end }}
   volumeClaimTemplates:
   - metadata:

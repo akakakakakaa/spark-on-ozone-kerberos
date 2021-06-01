@@ -21,13 +21,15 @@ metadata:
 data:
   {{- if .Values.security.enabled }}
   OZONE-SITE.XML_ozone.security.enabled: "true"
+  OZONE-SITE.XML_ozone.administrators: "*"
   CORE-SITE.XML_hadoop.security.authentication: {{ .Values.security.authentication }}
   {{- if eq .Values.security.authentication "kerberos" }}
-  OZONE-SITE.XML_hdds.scm.kerberos.principal: scm/scm@{{ .Values.security.kerberos.realm }}
+  KERBEROS_SERVER: {{ .Values.security.authentication }}
+  OZONE-SITE.XML_hdds.scm.kerberos.principal: scm@{{ .Values.security.kerberos.realm }}
   OZONE-SITE.XML_hdds.scm.kerberos.keytab.file: {{ .Values.scm.security.kerberos.keytab.path }}
-  OZONE-SITE.XML_ozone.om.kerberos.principal: om/om@{{ .Values.security.kerberos.realm }}
+  OZONE-SITE.XML_ozone.om.kerberos.principal: om@{{ .Values.security.kerberos.realm }}
   OZONE-SITE.XML_ozone.om.kerberos.keytab.file: {{ .Values.om.security.kerberos.keytab.path }}
-  HDFS-SITE.XML_dfs.datanode.kerberos.principal: dn/_HOST@{{ .Values.security.kerberos.realm }}
+  HDFS-SITE.XML_dfs.datanode.kerberos.principal: datanode@{{ .Values.security.kerberos.realm }}
   HDFS-SITE.XML_dfs.datanode.keytab.file: {{ .Values.datanode.security.kerberos.keytab.path }}
   {{- end }}
   {{- end }}
