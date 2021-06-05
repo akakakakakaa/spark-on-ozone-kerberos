@@ -57,6 +57,8 @@ spec:
         image: '{{ .Values.image.name }}:{{ .Values.image.version }}'
         #command: ["/bin/bash", "-c", "--"]
         #args: [ "while true; do sleep 10000; done;"]
+        ports:
+        - containerPort: 9961
         args:
         - ozone
         - scm

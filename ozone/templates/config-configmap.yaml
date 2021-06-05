@@ -25,21 +25,24 @@ data:
   CORE-SITE.XML_hadoop.security.authentication: {{ .Values.security.authentication }}
   {{- if eq .Values.security.authentication "kerberos" }}
   KERBEROS_SERVER: {{ .Values.security.authentication }}
-  OZONE-SITE.XML_hdds.scm.kerberos.principal: scm@{{ .Values.security.kerberos.realm }}
+  # ref. https://www.codota.com/web/assistant/code/rs/5c6564a91095a5000149630e#L282
+  # The hadoop kerberos client, saslclient, seems to operate ignoring the krb5.conf dns options.
+  # So, use Service SRV Record.
+  OZONE-SITE.XML_hdds.scm.kerberos.principal: scm/{{ .Values.security.kerberos.server }}.{{ .Release.Namespace }}.svc.cluster.local@{{ .Values.security.kerberos.realm }}
   OZONE-SITE.XML_hdds.scm.kerberos.keytab.file: {{ .Values.scm.security.kerberos.keytab.path }}
   OZONE-SITE.XML_ozone.om.kerberos.principal: om@{{ .Values.security.kerberos.realm }}
   OZONE-SITE.XML_ozone.om.kerberos.keytab.file: {{ .Values.om.security.kerberos.keytab.path }}
-  HDFS-SITE.XML_dfs.datanode.kerberos.principal: datanode@{{ .Values.security.kerberos.realm }}
-  HDFS-SITE.XML_dfs.datanode.keytab.file: {{ .Values.datanode.security.kerberos.keytab.path }}
+  HDFS-SITE.XML_dfs.datanode.kerberos.principal: scm/{{ .Values.security.kerberos.server }}.{{ .Release.Namespace }}.svc.cluster.local@{{ .Values.security.kerberos.realm }}
+  HDFS-SITE.XML_dfs.datanode.keytab.file: {{ .Values.scm.security.kerberos.keytab.path }}
   {{- end }}
   {{- end }}
   OZONE-SITE.XML_hdds.datanode.dir: /data/storage
   OZONE-SITE.XML_ozone.scm.datanode.id.dir: /data
   OZONE-SITE.XML_ozone.metadata.dirs: /data/metadata
-  OZONE-SITE.XML_ozone.scm.block.client.address: scm-0.scm
-  OZONE-SITE.XML_ozone.om.address: om-0.om
-  OZONE-SITE.XML_ozone.scm.client.address: scm-0.scm
-  OZONE-SITE.XML_ozone.scm.names: scm-0.scm
+  OZONE-SITE.XML_ozone.scm.block.client.address: scm
+  OZONE-SITE.XML_ozone.om.address: om
+  OZONE-SITE.XML_ozone.scm.client.address: scm
+  OZONE-SITE.XML_ozone.scm.names: scm
   LOG4J.PROPERTIES_log4j.rootLogger: INFO, stdout
   LOG4J.PROPERTIES_log4j.appender.stdout: org.apache.log4j.ConsoleAppender
   LOG4J.PROPERTIES_log4j.appender.stdout.layout: org.apache.log4j.PatternLayout

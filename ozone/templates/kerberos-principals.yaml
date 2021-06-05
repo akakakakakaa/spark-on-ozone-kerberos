@@ -7,7 +7,7 @@ metadata:
     krb-operator.novakov-alexey.github.io/server: {{ .Values.security.kerberos.server }}
 spec:
   list:
-    - name: scm
+    - name: scm/{{ .Values.security.kerberos.server }}.{{ .Release.Namespace }}.svc.cluster.local
       keytab: {{ base .Values.scm.security.kerberos.keytab.path }}
       password:
         type: static
@@ -23,12 +23,4 @@ spec:
       secret:
         type: KeytabAndPassword
         name: om-keytab
-    - name: datanode
-      keytab: {{ base .Values.datanode.security.kerberos.keytab.path }}
-      password:
-        type: static
-        value: datanode
-      secret:
-        type: KeytabAndPassword
-        name: datanode-keytab
 {{ end }}

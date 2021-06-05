@@ -62,20 +62,20 @@ spec:
         - name: data
           mountPath: /data
         {{- if and .Values.security.enabled (eq .Values.security.authentication "kerberos") }}
-        - name: datanode-keytab
-          mountPath: {{ dir .Values.datanode.security.kerberos.keytab.path }}
+        - name: scm-keytab
+          mountPath: {{ dir .Values.scm.security.kerberos.keytab.path }}
         - name: krb5-conf
           mountPath: /etc/krb5.conf
           subPath: krb5.conf
         {{- end }}
       volumes:
       {{- if and .Values.security.enabled (eq .Values.security.authentication "kerberos") }}
-      - name: datanode-keytab
+      - name: scm-keytab
         secret:
-          secretName: datanode-keytab
+          secretName: scm-keytab
           items:
-          - key: {{ base .Values.datanode.security.kerberos.keytab.path }}
-            path: {{ base .Values.datanode.security.kerberos.keytab.path }}
+          - key: {{ base .Values.scm.security.kerberos.keytab.path }}
+            path: {{ base .Values.scm.security.kerberos.keytab.path }}
       - name: krb5-conf
         configMap:
           name: krb5-conf
