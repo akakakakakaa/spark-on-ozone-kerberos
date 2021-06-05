@@ -37,7 +37,8 @@ datanode:
   replicas: 1
   volume:
     storage: 2Gi
-  security:
-    kerberos:
-      keytab:
-        path: /etc/security/keytabs/datanode.keytab
+# datanode uses scm keytab
+#  security:
+#    kerberos:
+#      keytab:
+#        path: /etc/security/keytabs/datanode.keytab
