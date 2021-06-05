@@ -15,7 +15,7 @@ spec:
       secret:
         type: KeytabAndPassword
         name: scm-keytab
-    - name: om
+    - name: om/{{ .Values.security.kerberos.server }}.{{ .Release.Namespace }}.svc.cluster.local
       keytab: {{ base .Values.om.security.kerberos.keytab.path }}
       password:
         type: static

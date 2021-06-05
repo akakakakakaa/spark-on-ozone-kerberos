@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+## ozone default HADOOP_CONF_DIR = /etc/hadoop
 
 apiVersion: v1
 kind: ConfigMap
@@ -30,7 +31,7 @@ data:
   # So, use Service SRV Record.
   OZONE-SITE.XML_hdds.scm.kerberos.principal: scm/{{ .Values.security.kerberos.server }}.{{ .Release.Namespace }}.svc.cluster.local@{{ .Values.security.kerberos.realm }}
   OZONE-SITE.XML_hdds.scm.kerberos.keytab.file: {{ .Values.scm.security.kerberos.keytab.path }}
-  OZONE-SITE.XML_ozone.om.kerberos.principal: om@{{ .Values.security.kerberos.realm }}
+  OZONE-SITE.XML_ozone.om.kerberos.principal: om/{{ .Values.security.kerberos.server }}.{{ .Release.Namespace }}.svc.cluster.local@{{ .Values.security.kerberos.realm }}
   OZONE-SITE.XML_ozone.om.kerberos.keytab.file: {{ .Values.om.security.kerberos.keytab.path }}
   HDFS-SITE.XML_dfs.datanode.kerberos.principal: scm/{{ .Values.security.kerberos.server }}.{{ .Release.Namespace }}.svc.cluster.local@{{ .Values.security.kerberos.realm }}
   HDFS-SITE.XML_dfs.datanode.keytab.file: {{ .Values.scm.security.kerberos.keytab.path }}

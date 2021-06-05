@@ -22,6 +22,8 @@ spec:
   ports:
   - port: 9874
     name: ui
+  - port: 9862
+    name: livenessprobe
   clusterIP: None
   selector:
     app: ozone
