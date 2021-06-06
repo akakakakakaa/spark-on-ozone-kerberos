@@ -54,12 +54,21 @@ spec:
           tcpSocket:
             port: 9862
           initialDelaySeconds: 30
-        envFrom:
-        - configMapRef:
-            name: config
         volumeMounts:
         - name: data
           mountPath: /data
+        - name: config
+          mountPath: /opt/hadoop/etc/hadoop/ozone-site.xml
+          subPath: ozone-site.xml
+        - name: config
+          mountPath: /opt/hadoop/etc/hadoop/core-site.xml
+          subPath: core-site.xml
+        - name: config
+          mountPath: /opt/hadoop/etc/hadoop/hdfs-site.xml
+          subPath: hdfs-site.xml
+        - name: config
+          mountPath: /opt/hadoop/etc/hadoop/log4j.properties
+          subPath: log4j.properties          
         {{- if and .Values.security.enabled (eq .Values.security.authentication "kerberos") }}
         - name: om-keytab
           mountPath: {{ dir .Values.om.security.kerberos.keytab.path }}
@@ -79,6 +88,18 @@ spec:
         configMap:
           name: krb5-conf
       {{- end }}
+      - name: config
+        configMap:
+          name: config
+          items:
+          - key: "ozone-site.xml"
+            path: "ozone-site.xml"
+          - key: "core-site.xml"
+            path: "core-site.xml"
+          - key: "hdfs-site.xml"
+            path: "hdfs-site.xml"
+          - key: "log4j.properties"
+            path: "log4j.properties"      
   volumeClaimTemplates:
   - metadata:
       name: data
