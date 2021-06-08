@@ -41,7 +41,7 @@ data:
     <property><name>ozone.scm.names</name><value>scm</value></property>
     <property><name>ozone.csi.s3g.address</name><value>http://s3g:9878</value></property>
     <property><name>ozone.csi.socket</name><value>/var/lib/csi/csi.sock</value></property>
-    <property><name>csi.owner</name><value>hadoop</value></property>
+    <property><name>ozone.csi.owner</name><value>hadoop</value></property>
     </configuration>
   core-site.xml: |
     <configuration>
