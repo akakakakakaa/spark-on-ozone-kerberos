@@ -55,9 +55,16 @@ spec:
             add:
             - SYS_ADMIN
           allowPrivilegeEscalation: true
+        command: ["/bin/sh", "-c"]
         args:
+        {{- if and .Values.security.enabled (eq .Values.security.authentication "kerberos") }}
+        # Even if security is enabled, it seems that Kerberos login is not done by default.
+        - kinit -kt {{ .Values.om.security.kerberos.keytab.path }} om/{{ .Values.security.kerberos.server }}.{{ .Release.Namespace }}.svc.cluster.local;
+          ozone csi;
+        {{- else }}
         - ozone
         - csi
+        {{- end }}
         imagePullPolicy: IfNotPresent
         volumeMounts:
         - name: plugin-dir
@@ -83,7 +90,25 @@ spec:
         - name: config
           mountPath: /opt/hadoop/etc/hadoop/log4j.properties
           subPath: log4j.properties          
+        {{- if and .Values.security.enabled (eq .Values.security.authentication "kerberos") }}
+        - name: om-keytab
+          mountPath: {{ dir .Values.om.security.kerberos.keytab.path }}
+        - name: krb5-conf
+          mountPath: /etc/krb5.conf
+          subPath: krb5.conf
+        {{- end }}
       volumes:
+      {{- if and .Values.security.enabled (eq .Values.security.authentication "kerberos") }}
+      - name: om-keytab
+        secret:
+          secretName: om-keytab
+          items:
+          - key: {{ base .Values.om.security.kerberos.keytab.path }}
+            path: {{ base .Values.om.security.kerberos.keytab.path }}
+      - name: krb5-conf
+        configMap:
+          name: krb5-conf
+      {{- end }}
       - name: plugin-dir
         hostPath:
           path: /var/lib/kubelet/plugins/org.apache.hadoop.ozone
