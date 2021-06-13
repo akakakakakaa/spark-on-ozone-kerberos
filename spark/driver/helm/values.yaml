@@ -1,0 +1,35 @@
+spark:
+  driver:
+    image:
+      repository: mansu/spark-driver
+      tag: spark3.1.2-ozone1.1.0
+    resources:
+      cpu: 1
+      memory: 2Gi 
+
+  executor:
+    image:
+      repository: mansu/spark-executor
+      tag: spark3.1.2-ozone1.1.0
+    resources:
+      default:
+        instances: 2
+        cpu: 1
+        memory: 2Gi
+
+  options: {}
+
+ozone:
+  # If the spark driver runs in a different namespace than ozone, set enabled to true
+  service:
+    enabled: true
+    namespace: ozone
+
+  security:
+    enabled: true
+    authentication: kerberos
+
+    # used when authentication is kerberos
+    kerberos:
+      server: krb-server
+      realm: EXAMPLE.COM

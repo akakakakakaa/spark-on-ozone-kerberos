@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jupyter
+  labels:
+    release: jupyter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      release: jupyter
+  template:
+    metadata:
+      labels:
+        release: jupyter
+    spec:
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      serviceAccountName: jupyter
+      containers:
+      - name: jupyter
+        image: "{{ .Values.spark.driver.image.repository }}:{{ .Values.spark.driver.image.tag }}"
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8888
+          protocol: TCP
+        - name: blockmanager
+          containerPort: 7777
+          protocol: TCP
+        - name: driver
+          containerPort: 2222
+          protocol: TCP
+        resources:
+          requests:
+            cpu: {{ .Values.spark.driver.resources.cpu }}
+            memory: {{ .Values.spark.driver.resources.memory }}
+          limits:
+            cpu: {{ .Values.spark.driver.resources.cpu }}
+            memory: {{ .Values.spark.driver.resources.memory }}
+        volumeMounts:
+        - name: spark-config
+          mountPath: /opt/hadoop/conf/ozone-site.xml
+          subPath: ozone-site.xml
+        - name: spark-config
+          mountPath: /opt/hadoop/conf/core-site.xml
+          subPath: core-site.xml
+        - name: spark-config
+          mountPath: /usr/local/spark/conf/spark-defaults.conf
+          subPath: spark-defaults.conf
+      volumes:
+      - name: spark-config
+        configMap:
+          name: spark-config
+          items:
+          - key: "ozone-site.xml"
+            path: "ozone-site.xml"
+          - key: "core-site.xml"
+            path: "core-site.xml"
+          - key: "spark-defaults.conf"
+            path: "spark-defaults.conf"

@@ -1,0 +1,43 @@
+{{- if .Values.ozone.service.enabled -}}
+kind: Service
+apiVersion: v1
+metadata:
+  name: om
+spec:
+  type: ExternalName
+  externalName: om.{{ .Values.ozone.service.namespace }}.svc.cluster.local
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: scm
+spec:
+  type: ExternalName
+  externalName: scm.{{ .Values.ozone.service.namespace }}.svc.cluster.local
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: datanode
+spec:
+  type: ExternalName
+  externalName: datanode.{{ .Values.ozone.service.namespace }}.svc.cluster.local
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: s3g
+spec:
+  type: ExternalName
+  externalName: s3g.{{ .Values.ozone.service.namespace }}.svc.cluster.local
+{{- if and .Values.ozone.security.enabled (eq .Values.ozone.security.authentication "kerberos") }}
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Values.ozone.security.kerberos.server }}
+spec:
+  type: ExternalName
+  externalName: {{ .Values.ozone.security.kerberos.server }}.{{ .Values.ozone.service.namespace }}.svc.cluster.local
+{{- end }}
+{{- end }}

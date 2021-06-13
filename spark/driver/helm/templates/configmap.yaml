@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spark-config
+data:
+  core-site.xml: |
+    <configuration>
+      <property>
+        <name>fs.AbstractFileSystem.o3fs.impl</name>
+        <value>org.apache.hadoop.fs.ozone.OzFs</value>
+      </property>
+    </configuration>
+  ozone-site.xml: |
+    {{- .Files.Get "ozone-site.xml" | nindent 4 }}
+  spark-defaults.conf: |
+    spark.kubernetes.namespace "{{ .Release.Namespace }}"
+    spark.kubernetes.container.image "{{ .Values.spark.executor.image.repository }}:{{ .Values.spark.executor.image.tag }}"
+    spark.driver.blockManager.port "7777"
+    spark.driver.port "2222"
+    spark.driver.host "jupyter.spark.svc.cluster.local"
+    spark.driver.bindAddress "0.0.0.0"
+    spark.executor.instances "{{ .Values.spark.executor.resources.default.instances }}"
+    spark.executor.cores "{{ .Values.spark.executor.resources.default.cpu }}"
+    spark.executor.memory "{{ .Values.spark.executor.resources.default.memory }}"
