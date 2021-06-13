@@ -28,7 +28,13 @@ scm:
     kerberos:
       keytab:
         path: /etc/security/keytabs/scm.keytab
+  container:
+    size: 1GB
 
+  # hdds
+  safemode:
+    min:
+      datanode: 1 # must be less than or equal to datanode replicas.
 
 s3g:
   replicas: 1
@@ -37,6 +43,8 @@ datanode:
   replicas: 1
   volume:
     storage: 2Gi
+  pipeline:
+    limit: 1 # must be less than or equal to datanode replicas.
 # datanode uses scm keytab
 #  security:
 #    kerberos:
